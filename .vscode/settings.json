@@ -4,5 +4,5 @@
         ".vscode{,/**}"
     ],
     "appService.deploySubpath": ".",
-    "appService.defaultWebAppToDeploy": "/subscriptions/9d071049-f688-42d9-977e-5b575c7cacec/resourceGroups/RessourceGroupeLab/providers/Microsoft.Web/sites/Speak-code"
+    "appService.defaultWebAppToDeploy": "/subscriptions/9d071049-f688-42d9-977e-5b575c7cacec/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/chat-enigma"
 }
