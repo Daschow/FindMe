@@ -31,24 +31,35 @@ app.get("/", (req, res) => {
   res.render("chat");
 });
 
-// users is a key-value pairs of socket.id -> user name
-let users = {
-};
+app.get("/login", (req, res) => {
+  res.render("login");
+});
 
+// users is a key-value pairs of socket.id -> user name
+let users = {};
+let me;
 io.on("connection", function (socket) {
   // Every socket connection has a unique ID
   console.log("new connection: " + socket.id);
 
+  for (let k in users) {
+    socket.broadcast.emit("logged", users[k]);
+  }
   // User Logged in
-  socket.on("login", (name) => {
+  socket.on("login", (user) => {
     // Map socket.id to the name
-    users[socket.id] = name;
+    users[socket.id] = user;
 
+    me = user;
+    user.id = users[socket.id];
+    users[me.id] = me;
+
+    socket.emit("logged", user);
     // Broadcast to everyone else (except the sender).
     // Say that the user has logged in.
     socket.broadcast.emit("msg", {
       from: "server",
-      message: `${name} logged in.`,
+      message: `${user} logged in.`,
     });
   });
 
@@ -72,6 +83,12 @@ io.on("connection", function (socket) {
   // Disconnected
   socket.on("disconnect", function () {
     // Remove the socket.id -> name mapping of this user
+    socket.broadcast.emit("disconnected", users);
+    socket.broadcast.emit("msg", {
+      from: "server",
+      message: `${users[socket.id]} logged out.`,
+    });
+
     console.log("disconnect: " + users[socket.id]);
     delete users[socket.id];
     // io.emit('disconnect', socket.id)
