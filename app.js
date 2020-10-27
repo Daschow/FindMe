@@ -8,6 +8,7 @@ var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 var express = require("express");
 app.use("/js", express.static("js"));
+app.use("/css", express.static("css"));
 
 //js path authorisation
 app.get("/", (req, res) => {
