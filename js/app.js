@@ -16,6 +16,13 @@ const newItem = (content) => {
   return item;
 };
 
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+
 // SOCKET.IO
 //welcome message recivied by the server
 socket.on("Welcome", (data) => {
