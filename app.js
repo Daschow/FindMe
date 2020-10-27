@@ -33,7 +33,6 @@ app.get("/", (req, res) => {
 
 // users is a key-value pairs of socket.id -> user name
 let users = {
-  // 'oiajt974nvb9ba_anf': 'Ahmad', // example
 };
 
 io.on("connection", function (socket) {
