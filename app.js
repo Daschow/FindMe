@@ -16,9 +16,7 @@ app.get("/", (req, res) => {
 });
 
 //localhost
-http.listen(3000, () => {
-  console.log("listening on *:3000");
-});
+http.listen(3000);
 
 //server send welcome message
 let msg = "Welcome to FindMe";
