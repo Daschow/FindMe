@@ -30,6 +30,6 @@ io.on("connect", (socket) => {
 io.on("connection", (socket) => {
   socket.on("CtoS", (msg) => {
     console.log("message: " + msg);
-    socket.emit("StoC", msg);
+    io.sockets.emit("StoC", msg);
   });
 });
