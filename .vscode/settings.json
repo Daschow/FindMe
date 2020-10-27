@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/9d071049-f688-42d9-977e-5b575c7cacec/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/Text-me",
+    "appService.deploySubpath": "."
+}
