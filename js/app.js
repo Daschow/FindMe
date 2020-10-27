@@ -1,24 +1,37 @@
-const socket = io("ws://localhost:3000");
+//
+//      CLIENT
+//
+var socket = io();
+const $message = document.getElementById("message");
+const sendmsg = (data) => {
+  $message.appendChild(newItem(data));
+};
+const newItem = (content) => {
+  const item = document.createElement("li");
+  item.innerText = content;
+  return item;
+};
 
-socket.on("connect", () => {
-  // either with send()
-  socket.send("Hello!");
+// //compteur
+// socket.on("hello", (counter) => {
+//   $events.appendChild(newItem(`hello - ${counter}`));
+// });
 
-  // or with emit() and custom event names
-  socket.emit(
-    "salutations",
-    "Hello!",
-    { mr: "john" },
-    Uint8Array.from([1, 2, 3, 4])
-  );
-});
-
-// handle the event sent with socket.send()
-socket.on("message", (data) => {
+socket.on("Welcome", (data) => {
+  newItem(data);
   console.log(data);
+  sendmsg(data);
 });
 
-// handle the event sent with socket.emit()
-socket.on("greetings", (elem1, elem2, elem3) => {
-  console.log(elem1, elem2, elem3);
+socket.on("StoC", (data) => {
+  newItem(data);
+  console.log(data);
+  sendmsg(data);
+});
+
+$("form").submit(function (e) {
+  e.preventDefault(); // prevents page reloading
+  socket.emit("CtoS", $("#m").val());
+  $("#m").val("");
+  return false;
 });
