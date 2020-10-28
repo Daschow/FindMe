@@ -1,12 +1,14 @@
-#messagesContainer {
-  max-height: 200px;
-  overflow-y: scroll;
-}
-
 .chat-message:nth-child(even) {
   background-color: rgba(235, 231, 231, 0.35);
 }
 
 .hidden {
   display: none;
+}
+
+.server-notification {
+  color: #555;
+  text-align: center;
+  font-size: small;
+  font-style: italic;
 }
