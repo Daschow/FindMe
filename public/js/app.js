@@ -4,6 +4,7 @@ window.addEventListener("load", () => {
   const $messageInput = document.getElementById("messageInput");
   const $messageForm = document.getElementById("messageForm");
   const $messagesContainer = document.getElementById("messagesContainer");
+  const $onlineList = document.getElementById("onlineList");
 
   // socket is the global object used to listen on incoming messages
   // and send (emit) ones to the server.
@@ -42,6 +43,14 @@ window.addEventListener("load", () => {
     let socket = io();
     window.onunload = () => socket.close();
 
+    //add to online liste of connected users
+    //need fix server side
+    //doesnt show previous connected
+    socket.on("logged", (data) => {
+      console.log('data on logged', data)
+      addToShowOnline(data);
+    });
+
     // Recieve Message
     socket.on("msg", (data) => {
       if (data.from != username) {
@@ -49,6 +58,10 @@ window.addEventListener("load", () => {
       } else {
         say("me", data.message);
       }
+    });
+
+    socket.on("disconnected", function (user) {
+      $(`#` + user.id).remove();
     });
 
     return socket;
@@ -60,5 +73,13 @@ window.addEventListener("load", () => {
       </div>`;
     // Scroll down to last message
     $messagesContainer.scrollTop = $messagesContainer.scrollHeight;
+  }
+
+  function addToShowOnline(Onlineusername) {
+    $onlineList.innerHTML +=
+      `<p id="` + username.id + `">${Onlineusername}<br></p>`;
+  }
+  function removeToShowOnline(username) {
+    $onlineList.innerHTML += `<p id="` + username.id + `">${username}<br></p>`;
   }
 });
