@@ -53,7 +53,6 @@ window.addEventListener("load", () => {
     //need fix server side
     //doesnt show previous connected
     socket.on("logged", (data) => {
-      console.log("data on logged", data);
       addToShowOnline(data);
     });
 
