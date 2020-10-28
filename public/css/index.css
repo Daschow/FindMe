@@ -12,3 +12,7 @@
   font-size: small;
   font-style: italic;
 }
+.center {
+  align-content: center;
+  text-align: center;
+}
