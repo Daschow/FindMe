@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
 
   $leaveBtn.addEventListener("click", function (event) {
     event.preventDefault();
-    document.location.href = document.URL;
+    document.location.replace(document.location.origin);
   });
 
   // Login

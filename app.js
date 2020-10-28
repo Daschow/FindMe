@@ -97,9 +97,9 @@ io.on("connection", function (socket) {
   socket.on("disconnect", function () {
     // Remove the socket.id -> name mapping of this user
     socket.broadcast.emit("disconnected", users[socket.id]);
-    
+
     //leaves the room
-    if (users[socket.id].name) {
+    if (users[socket.id] !== undefined) {
       socket.broadcast.emit("msg", {
         from: "server",
         message: `${users[socket.id].name} logged out.`,
