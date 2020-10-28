@@ -5,6 +5,13 @@ const io = require("socket.io")(http);
 const path = require("path");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers,
+  formatMessage,
+} = require("./utils/users");
 
 app.use("/public/js", express.static("js"));
 app.use("/public/css", express.static("css"));
@@ -43,18 +50,21 @@ io.on("connection", function (socket) {
   console.log("new connection: " + socket.id);
 
   for (let k in users) {
+    console.log("this is the loop " + users[k]);
     socket.broadcast.emit("logged", users[k]);
   }
+
   // User Logged in
   socket.on("login", (user) => {
     // Map socket.id to the name
-    users[socket.id] = user;
-
+    console.dir(user);
     me = user;
+    me.id = socket.id;
     user.id = users[socket.id];
     users[me.id] = me;
 
     socket.emit("logged", user);
+
     // Broadcast to everyone else (except the sender).
     // Say that the user has logged in.
     socket.broadcast.emit("msg", {
@@ -84,6 +94,7 @@ io.on("connection", function (socket) {
   socket.on("disconnect", function () {
     // Remove the socket.id -> name mapping of this user
     socket.broadcast.emit("disconnected", users);
+    //leaves the room
     socket.broadcast.emit("msg", {
       from: "server",
       message: `${users[socket.id]} logged out.`,

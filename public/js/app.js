@@ -44,7 +44,7 @@ window.addEventListener("load", () => {
     window.onunload = () => socket.close();
 
     //add to online liste of connected users
-    //need fix
+    //need fix server side
     //doesnt show previous connected
     socket.on("logged", (data) => {
       addToShowOnline(data);
@@ -74,11 +74,11 @@ window.addEventListener("load", () => {
     $messagesContainer.scrollTop = $messagesContainer.scrollHeight;
   }
 
-  function addToShowOnline(username) {
-    $onlineList.innerHTML += `<p id="` + username.id + `">${username}<br></p>`;
+  function addToShowOnline(Onlineusername) {
+    $onlineList.innerHTML +=
+      `<p id="` + username.id + `">${Onlineusername}<br></p>`;
   }
-
-  function showOnline(username) {
-    $onlineList.innerHTML += `<p>${username}<br></p>`;
+  function removeToShowOnline(username) {
+    $onlineList.innerHTML += `<p id="` + username.id + `">${username}<br></p>`;
   }
 });
