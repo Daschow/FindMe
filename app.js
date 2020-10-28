@@ -62,7 +62,6 @@ io.on("connection", function (socket) {
     socket.broadcast.emit("logged", user);
 
     for (let k in users) {
-      console.log("this is the loop " + users[k]);
       socket.emit("logged", users[k]);
     }
 
