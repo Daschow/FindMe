@@ -31,5 +31,5 @@ jobs:
       with:
         app-name: 'chat-enigma'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_3a0b2c649d0b4bc483d864028700eca1 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_3798fca946584949803f4b73fe273ac5 }}
         package: .
