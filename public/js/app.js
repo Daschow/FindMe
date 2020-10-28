@@ -15,6 +15,7 @@ window.addEventListener("load", () => {
   let typing = false;
   let timeout = undefined;
   let globUser;
+  let globUserId;
   function login(name) {
     // Create a socket connection
     socket = ioConnect();
@@ -79,6 +80,11 @@ window.addEventListener("load", () => {
       }
     });
 
+    $onlineList.addEventListener("click", function () {
+      debug();
+      //TODO REDIRECT TO PROFIL USER
+    });
+
     socket.on("isTyping", (data) => {
       if (data.typing == true) $typing.innerHTML = `${data.user} is typing...`;
       else $typing.innerHTML = "";
@@ -116,8 +122,11 @@ window.addEventListener("load", () => {
   }
 
   function addToShowOnline(user) {
+    globUserId = user.id;
     $onlineList.innerHTML +=
-      `<li class="list-group-item" id="` + user.id + `">${user.name}</li>`;
+      `<li class="list-group-item btn btn-outline-primary" id="` +
+      user.id +
+      `">${user.name}</li>`;
   }
   function debug() {
     console.log("debug");
