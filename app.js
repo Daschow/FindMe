@@ -43,36 +43,35 @@ app.get("/", (req, res) => {
   res.render("chat");
 });
 
-app.get("/login", (req, res) => {
-  res.render("login");
+app.get("/profil", (req, res) => {
+  res.render("profil");
 });
 
 // users is a key-value pairs of socket.id -> user name
 let users = {};
-let me;
 io.on("connection", function (socket) {
   // Every socket connection has a unique ID
   console.log("new connection: " + socket.id);
 
   // User Logged in
-  socket.on("login", (user) => {
+  socket.on("login", (username) => {
     // Map socket.id to the name
-    console.dir(user);
-    socket.emit("logged", user);
-    socket.broadcast.emit("logged", user);
+    console.dir(username);
+    const userData = { id: socket.id, name: username };
+    socket.emit("logged", userData);
+    socket.broadcast.emit("logged", userData);
 
     for (let k in users) {
-      console.log("this is the loop " + users[k]);
       socket.emit("logged", users[k]);
     }
 
-    users[socket.id] = user;
+    users[socket.id] = userData;
 
     // Broadcast to everyone else (except the sender).
     // Say that the user has logged in.
     socket.broadcast.emit("msg", {
-      from: "server",
-      message: `${user} logged in.`,
+      from: { name: "server", isServer: true},
+      message: `${username} logged in.`,
     });
   });
 
@@ -88,23 +87,21 @@ io.on("connection", function (socket) {
       from: users[socket.id],
       message: message,
     });
-    // You could just do: io.emit('msg', ...)
-    // which will send the message to all, including
-    // the sender.
   });
 
   // Disconnected
   socket.on("disconnect", function () {
     // Remove the socket.id -> name mapping of this user
-    socket.broadcast.emit("disconnected", users);
-    //leaves the room
-    socket.broadcast.emit("msg", {
-      from: "server",
-      message: `${users[socket.id]} logged out.`,
-    });
+    socket.broadcast.emit("disconnected", users[socket.id]);
 
+    //leaves the room
+    if (users[socket.id] !== undefined) {
+      socket.broadcast.emit("msg", {
+        from: {name: "server", isServer: true},
+        message: `${users[socket.id].name} logged out.`,
+      });
+    }
     console.log("disconnect: " + users[socket.id]);
     delete users[socket.id];
-    // io.emit('disconnect', socket.id)
   });
 });

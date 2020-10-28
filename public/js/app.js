@@ -5,18 +5,27 @@ window.addEventListener("load", () => {
   const $messageForm = document.getElementById("messageForm");
   const $messagesContainer = document.getElementById("messagesContainer");
   const $onlineList = document.getElementById("onlineList");
-
+  const $leaveBtn = document.getElementById("leaveBtn");
+  $leaveBtn.classList.add('hidden');
   // socket is the global object used to listen on incoming messages
   // and send (emit) ones to the server.
   let socket;
-  // username is used to be compared with 'from' in 'msg' events
-  let username;
+  let userId;
   function login(name) {
     // Create a socket connection
     socket = ioConnect();
-    username = name;
+
+    socket.on('connect', () => {
+      userId = socket.id;
+    });
+    
     socket.emit("login", name);
   }
+
+  $leaveBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    document.location.replace(document.location.origin);
+  });
 
   // Login
   $loginForm.addEventListener("submit", function (event) {
@@ -28,6 +37,7 @@ window.addEventListener("load", () => {
     // show the chat message form
     $loginForm.remove();
     $messageForm.classList.remove("hidden");
+    $leaveBtn.classList.remove('hidden');
   });
 
   // Send Message
@@ -40,23 +50,22 @@ window.addEventListener("load", () => {
   });
 
   function ioConnect() {
-    let socket = io();
+    socket = io();
     window.onunload = () => socket.close();
 
     //add to online liste of connected users
     //need fix server side
     //doesnt show previous connected
     socket.on("logged", (data) => {
-      console.log('data on logged', data)
       addToShowOnline(data);
     });
 
     // Recieve Message
     socket.on("msg", (data) => {
-      if (data.from != username) {
-        say(data.from, data.message);
-      } else {
+      if (data.from.id && data.from.id === userId) {
         say("me", data.message);
+      } else {
+        say(data.from.name, data.message, data.from.isServer);
       }
     });
 
@@ -67,19 +76,23 @@ window.addEventListener("load", () => {
     return socket;
   }
 
-  function say(name, message) {
-    $messagesContainer.innerHTML += `<div class="chat-message">
-          <span style="color: red; font-weight: bold;">${name}:</span> ${message}
+  function say(name, message, isFromServer = false) {
+    if (isFromServer) {
+      $messagesContainer.innerHTML += `<div class="chat-message server-notification">
+        ${message}
       </div>`;
+    } else {
+      $messagesContainer.innerHTML += `<div class="chat-message">
+        <span style="color: red; font-weight: bold;">${name}:</span> ${message}
+      </div>`;
+    }
+
     // Scroll down to last message
     $messagesContainer.scrollTop = $messagesContainer.scrollHeight;
   }
 
-  function addToShowOnline(Onlineusername) {
+  function addToShowOnline(user) {
     $onlineList.innerHTML +=
-      `<p id="` + username.id + `">${Onlineusername}<br></p>`;
-  }
-  function removeToShowOnline(username) {
-    $onlineList.innerHTML += `<p id="` + username.id + `">${username}<br></p>`;
+      `<li class="list-group-item" id="` + user.id + `">${user.name}</li>`;
   }
 });
