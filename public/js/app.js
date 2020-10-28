@@ -5,6 +5,7 @@ window.addEventListener("load", () => {
   const $messageForm = document.getElementById("messageForm");
   const $messagesContainer = document.getElementById("messagesContainer");
   const $onlineList = document.getElementById("onlineList");
+  const $leaveBtn = document.getElementById("leaveBtn");
 
   // socket is the global object used to listen on incoming messages
   // and send (emit) ones to the server.
@@ -17,6 +18,11 @@ window.addEventListener("load", () => {
     username = name;
     socket.emit("login", name);
   }
+
+  $leaveBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    document.location.reload(true);
+  });
 
   // Login
   $loginForm.addEventListener("submit", function (event) {
@@ -47,7 +53,7 @@ window.addEventListener("load", () => {
     //need fix server side
     //doesnt show previous connected
     socket.on("logged", (data) => {
-      console.log('data on logged', data)
+      console.log("data on logged", data);
       addToShowOnline(data);
     });
 
