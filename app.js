@@ -67,10 +67,14 @@ io.on("connection", function (socket) {
 
     users[socket.id] = userData;
 
+    socket.on("isTyping", function (data) {
+      if (data.typing == true) socket.broadcast.emit("isTyping", data);
+      else socket.broadcast.emit("isTyping", data);
+    });
     // Broadcast to everyone else (except the sender).
     // Say that the user has logged in.
     socket.broadcast.emit("msg", {
-      from: { name: "server", isServer: true},
+      from: { name: "server", isServer: true },
       message: `${username} logged in.`,
     });
   });
@@ -97,7 +101,7 @@ io.on("connection", function (socket) {
     //leaves the room
     if (users[socket.id] !== undefined) {
       socket.broadcast.emit("msg", {
-        from: {name: "server", isServer: true},
+        from: { name: "server", isServer: true },
         message: `${users[socket.id].name} logged out.`,
       });
     }
