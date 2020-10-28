@@ -2,6 +2,9 @@
   "name": "socket-find-me",
   "version": "0.0.1",
   "description": "my first socket.io app",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
   "dependencies": {
     "body-parser": "^1.17.2",
     "ejs": "^2.7.4",
@@ -9,5 +12,8 @@
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
