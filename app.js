@@ -16,6 +16,11 @@ const {
 app.use("/public/js", express.static("js"));
 app.use("/public/css", express.static("css"));
 app.use(express.static(__dirname + "/public"));
+
+const favicon = require("express-favicon");
+
+app.use(favicon(__dirname + "/public/img/favicon-pirate.png"));
+
 const port = process.env.PORT || 3000;
 app.set("port", port);
 
@@ -53,12 +58,12 @@ io.on("connection", function (socket) {
   socket.on("login", (user) => {
     // Map socket.id to the name
     console.dir(user);
-    socket.emit('logged', user);
+    socket.emit("logged", user);
     socket.broadcast.emit("logged", user);
-    
+
     for (let k in users) {
       console.log("this is the loop " + users[k]);
-      socket.emit('logged', users[k]);
+      socket.emit("logged", users[k]);
     }
 
     users[socket.id] = user;
