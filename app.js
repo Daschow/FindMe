@@ -49,21 +49,19 @@ io.on("connection", function (socket) {
   // Every socket connection has a unique ID
   console.log("new connection: " + socket.id);
 
-  for (let k in users) {
-    console.log("this is the loop " + users[k]);
-    socket.broadcast.emit("logged", users[k]);
-  }
-
   // User Logged in
   socket.on("login", (user) => {
     // Map socket.id to the name
     console.dir(user);
-    me = user;
-    me.id = socket.id;
-    user.id = users[socket.id];
-    users[me.id] = me;
+    socket.emit('logged', user);
+    socket.broadcast.emit("logged", user);
+    
+    for (let k in users) {
+      console.log("this is the loop " + users[k]);
+      socket.emit('logged', users[k]);
+    }
 
-    socket.emit("logged", user);
+    users[socket.id] = user;
 
     // Broadcast to everyone else (except the sender).
     // Say that the user has logged in.
