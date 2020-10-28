@@ -6,22 +6,24 @@ window.addEventListener("load", () => {
   const $messagesContainer = document.getElementById("messagesContainer");
   const $onlineList = document.getElementById("onlineList");
   const $leaveBtn = document.getElementById("leaveBtn");
-
+  $leaveBtn.classList.add('hidden');
   // socket is the global object used to listen on incoming messages
   // and send (emit) ones to the server.
   let socket;
   // username is used to be compared with 'from' in 'msg' events
   let username;
+  let userId;
   function login(name) {
     // Create a socket connection
     socket = ioConnect();
     username = name;
+    userId = socket.id;
     socket.emit("login", name);
   }
 
   $leaveBtn.addEventListener("click", function (event) {
     event.preventDefault();
-    document.location.reload(true);
+    document.location.href = document.URL;
   });
 
   // Login
@@ -34,6 +36,7 @@ window.addEventListener("load", () => {
     // show the chat message form
     $loginForm.remove();
     $messageForm.classList.remove("hidden");
+    $leaveBtn.classList.remove('hidden');
   });
 
   // Send Message
@@ -58,8 +61,8 @@ window.addEventListener("load", () => {
 
     // Recieve Message
     socket.on("msg", (data) => {
-      if (data.from != username) {
-        say(data.from, data.message);
+      if (data.from.id != userId) {
+        say(data.from.name, data.message);
       } else {
         say("me", data.message);
       }
@@ -80,11 +83,8 @@ window.addEventListener("load", () => {
     $messagesContainer.scrollTop = $messagesContainer.scrollHeight;
   }
 
-  function addToShowOnline(Onlineusername) {
+  function addToShowOnline(user) {
     $onlineList.innerHTML +=
-      `<p id="` + username.id + `">${Onlineusername}<br></p>`;
-  }
-  function removeToShowOnline(username) {
-    $onlineList.innerHTML += `<p id="` + username.id + `">${username}<br></p>`;
+      `<li class="list-group-item" id="` + user.id + `">${user.name}</li>`;
   }
 });

@@ -1,84 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Chat</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="/css/index.css" />
-  </head>
-  <body>
-    <div class="wrapper">
-      <!-- Sidebar -->
-      <nav id="sidebar">
-        <div class="sidebar-header">
-          <h3>Online :</h3>
-        </div>
 
-        <ul class="list-unstyled components">
-          <p id="onlineList"></p>
-        </ul>
-      </nav>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-4">
-          <form id="loginForm">
-            <div class="input-group mb-3">
-              <input
-                type="text"
-                class="form-control"
-                autocomplete="off"
-                placeholder="name..."
-                id="nameInput"
-              />
-              <div class="input-group-append">
-                <button class="btn btn-success" type="submit">Login</button>
-              </div>
-            </div>
-          </form>
-        </div>
+<head>
+  <%- include('base/head', {title: 'Chat'}); %>
+</head>
+
+<body>
+  <%- include('base/navbar'); %>
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-3">
+        <nav id="sidebar">
+          <ul class="list-group" id="onlineList"></ul>
+        </nav>
       </div>
-      <div class="row">
-        <div class="col">
-          <form id="messageForm" class="hidden">
-            <class class="input-group mb-3">
-              <input
-                type="text"
-                class="form-control"
-                autocomplete="off"
-                placeholder="chat..."
-                id="messageInput"
-              />
+      <form id="loginForm" class="col-4">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" autocomplete="off" placeholder="name..." id="nameInput" />
+          <div class="input-group-append">
+            <button class="btn btn-success" type="submit">Login</button>
+          </div>
+        </div>
+      </form>
+      <div class="col-8">
+          <form id="messageForm" class="col-12 hidden">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" autocomplete="off" placeholder="chat..." id="messageInput" />
               <div class="input-group-append">
                 <button class="btn btn-outline-primary" type="submit">
                   Send
                 </button>
               </div>
-            </class>
-            <button id="leaveBtn" class="btn btn-danger" type="button">
-              Leaver
-            </button>
+            </div>
           </form>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col" id="messagesContainer">
-          <!-- Chat Messages Here -->
-        </div>
+          <div class="col-12" id="messagesContainer">
+            <!-- Chat Messages Here -->
+          </div>
       </div>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="/js/app.js"></script>
-  </body>
+  </div>
+  <%- include('base/scripts'); %>
+  <script src="/js/app.js"></script>
+</body>
+
 </html>

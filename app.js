@@ -55,23 +55,24 @@ io.on("connection", function (socket) {
   console.log("new connection: " + socket.id);
 
   // User Logged in
-  socket.on("login", (user) => {
+  socket.on("login", (username) => {
     // Map socket.id to the name
-    console.dir(user);
-    socket.emit("logged", user);
-    socket.broadcast.emit("logged", user);
+    console.dir(username);
+    const userData = { id: socket.id, name: username };
+    socket.emit("logged", userData);
+    socket.broadcast.emit("logged", userData);
 
     for (let k in users) {
       socket.emit("logged", users[k]);
     }
 
-    users[socket.id] = user;
+    users[socket.id] = userData;
 
     // Broadcast to everyone else (except the sender).
     // Say that the user has logged in.
     socket.broadcast.emit("msg", {
-      from: "server",
-      message: `${user} logged in.`,
+      from: { name: "server" },
+      message: `${username} logged in.`,
     });
   });
 
@@ -95,13 +96,15 @@ io.on("connection", function (socket) {
   // Disconnected
   socket.on("disconnect", function () {
     // Remove the socket.id -> name mapping of this user
-    socket.broadcast.emit("disconnected", users);
+    socket.broadcast.emit("disconnected", users[socket.id]);
+    
     //leaves the room
-    socket.broadcast.emit("msg", {
-      from: "server",
-      message: `${users[socket.id]} logged out.`,
-    });
-
+    if (users[socket.id].name) {
+      socket.broadcast.emit("msg", {
+        from: "server",
+        message: `${users[socket.id].name} logged out.`,
+      });
+    }
     console.log("disconnect: " + users[socket.id]);
     delete users[socket.id];
     // io.emit('disconnect', socket.id)
