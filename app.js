@@ -43,8 +43,8 @@ app.get("/", (req, res) => {
   res.render("chat");
 });
 
-app.get("/login", (req, res) => {
-  res.render("login");
+app.get("/profil", (req, res) => {
+  res.render("profil");
 });
 
 // users is a key-value pairs of socket.id -> user name
