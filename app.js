@@ -49,7 +49,6 @@ app.get("/profil", (req, res) => {
 
 // users is a key-value pairs of socket.id -> user name
 let users = {};
-let me;
 io.on("connection", function (socket) {
   // Every socket connection has a unique ID
   console.log("new connection: " + socket.id);
@@ -71,7 +70,7 @@ io.on("connection", function (socket) {
     // Broadcast to everyone else (except the sender).
     // Say that the user has logged in.
     socket.broadcast.emit("msg", {
-      from: { name: "server" },
+      from: { name: "server", isServer: true},
       message: `${username} logged in.`,
     });
   });
@@ -88,9 +87,6 @@ io.on("connection", function (socket) {
       from: users[socket.id],
       message: message,
     });
-    // You could just do: io.emit('msg', ...)
-    // which will send the message to all, including
-    // the sender.
   });
 
   // Disconnected
@@ -101,12 +97,11 @@ io.on("connection", function (socket) {
     //leaves the room
     if (users[socket.id] !== undefined) {
       socket.broadcast.emit("msg", {
-        from: "server",
+        from: {name: "server", isServer: true},
         message: `${users[socket.id].name} logged out.`,
       });
     }
     console.log("disconnect: " + users[socket.id]);
     delete users[socket.id];
-    // io.emit('disconnect', socket.id)
   });
 });

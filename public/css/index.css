@@ -5,3 +5,10 @@
 .hidden {
   display: none;
 }
+
+.server-notification {
+  color: #555;
+  text-align: center;
+  font-size: small;
+  font-style: italic;
+}
