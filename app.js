@@ -5,6 +5,7 @@ const io = require("socket.io")(http);
 const path = require("path");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
+const db = require("./model/database");
 const {
   userJoin,
   getCurrentUser,
