@@ -60,7 +60,7 @@ io.on("connection", function (socket) {
     console.dir(username);
     const userData = { id: socket.id, name: username };
 
-    await db.addUser(userData); 
+    await db.addUser(userData);
 
     socket.emit("logged", userData);
     socket.broadcast.emit("logged", userData);
@@ -86,7 +86,6 @@ io.on("connection", function (socket) {
   // Message Recieved
   socket.on("msg", async (message) => {
     // Broadcast to everyone else (except the sender)
-    
     await db.addMessage(socket.id, message);
 
     socket.broadcast.emit("msg", {
@@ -114,5 +113,6 @@ io.on("connection", function (socket) {
     }
     console.log("disconnect: " + users[socket.id]);
     delete users[socket.id];
+    db.disconnectDb();
   });
 });
