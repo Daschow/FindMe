@@ -23,3 +23,14 @@
   font-size: small;
   font-style: italic;
 }
+
+.topbar {
+  height: 650px;
+  overflow: scroll;
+}
+
+.myfooter {
+  position: fixed;
+  bottom: 4%;
+  width: 60%;
+}
