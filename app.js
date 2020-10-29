@@ -5,6 +5,7 @@ const io = require("socket.io")(http);
 const path = require("path");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
+const db = require("./model/database");
 const {
   userJoin,
   getCurrentUser,
@@ -54,10 +55,13 @@ io.on("connection", function (socket) {
   console.log("new connection: " + socket.id);
 
   // User Logged in
-  socket.on("login", (username) => {
+  socket.on("login", async (username) => {
     // Map socket.id to the name
     console.dir(username);
     const userData = { id: socket.id, name: username };
+
+    await db.addUser(userData);
+
     socket.emit("logged", userData);
     socket.broadcast.emit("logged", userData);
 
@@ -80,8 +84,10 @@ io.on("connection", function (socket) {
   });
 
   // Message Recieved
-  socket.on("msg", (message) => {
+  socket.on("msg", async (message) => {
     // Broadcast to everyone else (except the sender)
+    await db.addMessage(socket.id, message);
+
     socket.broadcast.emit("msg", {
       from: users[socket.id],
       message: message,
@@ -107,5 +113,6 @@ io.on("connection", function (socket) {
     }
     console.log("disconnect: " + users[socket.id]);
     delete users[socket.id];
+    db.disconnectDb();
   });
 });
