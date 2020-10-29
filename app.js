@@ -6,13 +6,6 @@ const path = require("path");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const db = require("./model/database");
-const {
-  userJoin,
-  getCurrentUser,
-  userLeave,
-  getRoomUsers,
-  formatMessage,
-} = require("./utils/users");
 
 app.use("/public/js", express.static("js"));
 app.use("/public/css", express.static("css"));
