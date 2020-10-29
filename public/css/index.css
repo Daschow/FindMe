@@ -12,7 +12,14 @@
   font-size: small;
   font-style: italic;
 }
+
 .center {
   align-content: center;
   text-align: center;
+}
+
+.is-typing {
+  color: #555;
+  font-size: small;
+  font-style: italic;
 }
