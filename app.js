@@ -86,6 +86,9 @@ io.on("connection", function (socket) {
   // Message Recieved
   socket.on("msg", async (message) => {
     // Broadcast to everyone else (except the sender)
+    
+    await db.addMessage(socket.id, message);
+
     socket.broadcast.emit("msg", {
       from: users[socket.id],
       message: message,
