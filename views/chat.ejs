@@ -1,54 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <%- include('base/head', {title: 'Chat'}); %>
+  </head>
 
-<head>
-  <%- include('base/head', {title: 'Chat'}); %>
-</head>
+  <body>
+    <div class="mb-4"><%- include('base/navbar'); %></div>
 
-<body>
-  <div class="mb-4">
-    <%- include('base/navbar'); %>
-  </div>
-
-  <form id="loginForm">
-    <div class="container">
-      <div class="d-flex flex-column align-items-center">
-        <div class="col-9 center">
-          <!-- login Here -->
-          <div class="input-group">
-            <input type="text" class="form-control" autocomplete="off" placeholder="name..." id="nameInput" />
-            <div class="input-group-append">
-              <button class="btn btn-success" type="submit">Login</button>
+    <form id="loginForm">
+      <div class="container">
+        <div class="d-flex flex-column align-items-center">
+          <div class="col-9 center">
+            <!-- login Here -->
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                autocomplete="off"
+                placeholder="Enter your username here..."
+                id="nameInput"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-success" type="submit">Login</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </form>
-  <div class="row">
-    <nav id="sidebar" class="col-3">
-      <ul class="list-group" id="onlineList"></ul>
-    </nav>
-    <div class="col-7">
-      <div class="row align-items-end">
-        <div id="messagesContainer" class="col-12">
-          <!-- Chat Messages Here -->
-        </div>
+    </form>
+    <div class="row">
+      <nav id="sidebar" class="col-3">
+        <ul class="list-group" id="onlineList"></ul>
+      </nav>
+      <div class="col-7">
+        <div class="row align-items-end">
+          <div id="messagesContainer" class="col-12">
+            <!-- Chat Messages Here -->
+          </div>
           <!-- message form Here -->
           <form id="messageForm" class="col-12 hidden">
             <p id="typing" class="is-typing"></p>
             <div class="input-group">
-              <input type="text" class="form-control" autocomplete="off" placeholder="chat..." id="messageInput" />
+              <input
+                type="text"
+                class="form-control"
+                autocomplete="off"
+                placeholder="Enter message here..."
+                id="messageInput"
+              />
               <div class="input-group-append">
-                <button class="btn btn-outline-primary" type="submit">Send</button>
+                <button class="btn btn-outline-primary" type="submit">
+                  Send
+                </button>
               </div>
             </div>
           </form>
+        </div>
       </div>
     </div>
-  </div>
-  <%- include('base/scripts'); %>
-  <script src="/js/app.js"></script>
-</body>
-
+    <%- include('base/scripts'); %>
+    <script src="/js/app.js"></script>
+  </body>
 </html>
