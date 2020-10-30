@@ -7,6 +7,7 @@ window.addEventListener("load", () => {
   const $onlineList = document.getElementById("onlineList");
   const $leaveBtn = document.getElementById("leaveBtn");
   const $typing = document.getElementById("typing");
+  const $scroll = document.getElementById("scroll");
   $leaveBtn.classList.add("hidden");
   // socket is the global object used to listen on incoming messages
   // and send (emit) ones to the server.
@@ -118,7 +119,7 @@ window.addEventListener("load", () => {
     }
 
     // Scroll down to last message
-    $messagesContainer.scrollTop = $messagesContainer.scrollHeight;
+    $scroll.scrollTop = $scroll.scrollHeight;
   }
 
   function addToShowOnline(user) {
